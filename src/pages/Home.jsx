@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Loader from '../components/Loader'
-import  Islando  from '../models/Island'
+import  Islando from '../models/Island'
 import Sky from '../models/Sky'
 import Bird from '../models/Bird'
 import Plane from '../models/Plane'
 
 {/* <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>POPUP</div> */}
 const Home = () => {
+    const [currentStage, setCurrentStage] = useState(1);
     const [isRotating,setIsRotating] = useState(true)
 
     const adjustIslandForScreenSize = () =>{
@@ -64,6 +65,7 @@ const Home = () => {
                 rotation={islandRotation}
                 isRotating={isRotating}
                 setIsRotating={setIsRotating}
+                setCurrentStage={setCurrentStage}
                 
 
                  />
