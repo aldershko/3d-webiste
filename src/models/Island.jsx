@@ -11,9 +11,67 @@ import { useGLTF } from "@react-three/drei";
 import {useFrame,useThree} from '@react-three/fiber'
 import islandScene from '../assets/3d/island.glb'
 
-const Islando = (props) => {
+const Islando = ({isRotating,setIsRotating,...props}) => {
+
+  const {gl,viewport} = useThree();
     const islandRef = useRef()
   const { nodes, materials } = useGLTF(islandScene);
+
+  const lastX = useRef(0)
+  const rotationSpeed = useRef(0) 
+  const dampingFactor = 0.95
+
+  const handlePointerDown = (e) =>{
+    e.stopProgation();
+    e.preventDefault()
+    setIsRotating(true)
+
+    const clientX = e.touches ? e.touches['0'].clientX : e.clientX
+
+    lastX.current = clientX
+  }
+
+  const handlePointerUp = (e) =>{
+    e.stopProgation();
+    e.preventDefault()
+    setIsRotating(false)
+
+    const clientX = e.touches ? e.touches['0'].clientX : e.clientX
+
+    const delta = (clientX - lastX.current) / viewport.width
+
+    islandRef.current.rotation.y += delta * 0.01 * Math.PI
+
+    lastX.current = clientX
+
+    rotationSpeed.current = delta * 0.01 * Math.PI
+
+    
+  }
+
+  const handlePointerMove = (e) =>{
+    e.stopProgation();
+    e.preventDefault()
+
+    if(isRotating) handlePointerUp(e)
+   
+  }
+
+  useEffect (()=>{
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    document.addEventListener('pointerup', handlePointerUp)
+    document.addEventListener('pointermove', handlePointerMove)
+
+    return () =>{
+
+      document.removeEventListener('pointerdown', handlePointerDown)
+    document.removeEventListener('pointerup', handlePointerUp)
+    document.removeEventListener('pointermove', handlePointerMove)
+    }
+
+  },[ gl, handlePointerDown,  handlePointerMove, handlePointerUp])
+
   return (
     <a.group ref={islandRef} {...props} >
       <mesh
