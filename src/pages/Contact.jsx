@@ -43,7 +43,12 @@ const Contact = () => {
       
     ).then(()=>{
       setIsLoading(false)
-      setForm({name:'',email:'',message:''})
+
+      setTimeout(()=>{
+          setCurrentAnimation('idle')
+          setForm({name:'',email:'',message:''})
+      },[3000])
+      
     }).catch((error)=>{
       setIsLoading(false)
       setCurrentAnimation('idle')
