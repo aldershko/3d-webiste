@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 
 const useAlert = () => {
 
-const [alert,setAlert] = useState({ show:'false' , text:'' ,type:'danger'})
+const [alert,setAlert] = useState({ show:false , text:'' ,type:'danger'})
 
-const showAlert = ({show,type='danger'}) =>{
+const showAlert = ({show,text,type='danger'}) =>{
     setAlert({
-        show:'true',
+        show:true,
         text,
         type
     })
@@ -14,7 +14,7 @@ const showAlert = ({show,type='danger'}) =>{
 
 const hideAlert = ({show,type='danger'}) =>{
     setAlert({
-        show:'false',
+        show:false,
         text:'',
         type:'danger'
     })
